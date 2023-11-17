@@ -785,8 +785,11 @@ bool ImageFactory::checkType(ImageType type, BasicIo& io, bool advance) {
 }
 
 ImageType ImageFactory::getType(const std::string& path) {
+#ifdef EXV_ENABLE_FILESYSTEM
   FileIo fileIo(path);
   return getType(fileIo);
+#endif
+  return ImageType::none;
 }
 
 ImageType ImageFactory::getType(const byte* data, size_t size) {
@@ -817,12 +820,15 @@ BasicIo::UniquePtr ImageFactory::createIo(const std::string& path, [[maybe_unuse
 
   if (fProt == pHttp)
     return std::make_unique<HttpIo>(path);  // may throw
+#ifdef EXV_ENABLE_FILESYSTEM
   if (fProt == pFileUri)
     return std::make_unique<FileIo>(pathOfFileUrl(path));
   if (fProt == pStdin || fProt == pDataUri)
     return std::make_unique<XPathIo>(path);  // may throw
 
   return std::make_unique<FileIo>(path);
+#endif
+  return nullptr;
 }  // ImageFactory::createIo
 
 Image::UniquePtr ImageFactory::open(const std::string& path, bool useCurl) {
@@ -851,6 +857,7 @@ Image::UniquePtr ImageFactory::open(BasicIo::UniquePtr io) {
   return nullptr;
 }
 
+#ifdef EXV_ENABLE_FILESYSTEM
 Image::UniquePtr ImageFactory::create(ImageType type, const std::string& path) {
   auto fileIo = std::make_unique<FileIo>(path);
   // Create or overwrite the file, then close it
@@ -865,6 +872,7 @@ Image::UniquePtr ImageFactory::create(ImageType type, const std::string& path) {
     throw Error(ErrorCode::kerUnsupportedImageType, static_cast<int>(type));
   return image;
 }
+#endif
 
 Image::UniquePtr ImageFactory::create(ImageType type) {
   auto image = create(type, std::make_unique<MemIo>());
