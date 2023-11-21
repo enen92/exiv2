@@ -423,7 +423,11 @@ bool readDir(const char* path, Options& options) {
   bool bResult = false;
 
 #ifdef _MSC_VER
+#ifndef WINDOWS_STORE
   DWORD attrs = GetFileAttributes(path);
+#else
+  DWORD attrs = GetFileAttributes(reinterpret_cast<LPCWSTR>(path));
+#endif
   bool bOKAttrs = attrs != INVALID_FILE_ATTRIBUTES;
   bool bIsDir = (attrs & FILE_ATTRIBUTE_DIRECTORY) ? true : false;
 
@@ -435,7 +439,11 @@ bool readDir(const char* path, Options& options) {
     strcat_s(search, _MAX_PATH, "\\*");
 
     WIN32_FIND_DATA ffd;
+#ifndef WINDOWS_STORE
     HANDLE hFind = FindFirstFile(search, &ffd);
+#else
+    HANDLE hFind = FindFirstFile(reinterpret_cast<LPCWSTR>(search), &ffd);
+#endif
     BOOL bGo = hFind != INVALID_HANDLE_VALUE;
 
     if (bGo) {
@@ -443,7 +451,11 @@ bool readDir(const char* path, Options& options) {
         if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
           // _tprintf(TEXT("  %s   <DIR>\n"), ffd.cFileName);
         } else {
+#ifndef WINDOWS_STORE
           std::string pathName = makePath(path, ffd.cFileName);
+#else
+          std::string pathName = makePath(path, reinterpret_cast<const char*>(ffd.cFileName));
+#endif
           if (getFileType(pathName, options) == typeImage) {
             gFiles.push_back(pathName);
           }

@@ -45,6 +45,9 @@
 #define EXV_ICONV_CONST
 #endif
 
+// Automatically set by cmake if CMAKE_SYSTEM_NAME=WindowsStore
+#cmakedefine WINDOWS_STORE
+
 // Define if you have the zlib library.
 #cmakedefine EXV_HAVE_LIBZ
 

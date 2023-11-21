@@ -22,6 +22,9 @@ def exiv2_is_64bit(bin_dir):
         stderr=subprocess.PIPE,
         cwd=bin_dir
     )
+    print(proc.returncode)
+    print(proc.stderr)
+    print(proc.stdout)
     proc.check_returncode()
     m = re.search(r'^bits=([0-9]+)\s*$', proc.stdout.decode('utf-8'), re.MULTILINE)
     numbits = int(m[1])

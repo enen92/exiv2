@@ -70,3 +70,4 @@ OptionOutput( "Building fuzz tests:                " EXIV2_BUILD_FUZZ_TESTS     
 OptionOutput( "Building doc:                       " EXIV2_BUILD_DOC                    )
 OptionOutput( "Building with coverage flags:       " BUILD_WITH_COVERAGE                )
 OptionOutput( "Using ccache:                       " BUILD_WITH_CCACHE                  )
+OptionOutput( "Widnows store??:                       " WINDOWS_STORE                      )

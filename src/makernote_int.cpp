@@ -34,6 +34,10 @@ namespace fs = std::experimental::filesystem;
 #include <shlobj.h>
 #endif
 
+#ifdef WINDOWS_STORE
+#include <winrt/Windows.Storage.h>
+#endif
+
 #ifdef EXV_ENABLE_INIH
 #include <INIReader.h>
 #endif
@@ -70,12 +74,15 @@ std::string getExiv2ConfigPath() {
     return iniPath.string();
   }
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(WINDOWS_STORE)
   PWSTR buffer = nullptr;
   if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Profile, 0, nullptr, &buffer))) {
     currentPath = buffer;
     CoTaskMemFree(buffer);
   }
+#elif defined(WINDOWS_STORE)
+  winrt::Windows::Storage::UserDataPaths userdataPaths = winrt::Windows::Storage::UserDataPaths::GetDefault();
+  currentPath = userdataPaths.Profile().c_str();
 #else
   auto pw = getpwuid(getuid());
   currentPath = std::string(pw ? pw->pw_dir : "");
