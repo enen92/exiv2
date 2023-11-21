@@ -36,6 +36,7 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: ${{matrix.platform}}
+          uwp: true
 
       - name: Restore Conan cache
         uses: actions/cache@v3
