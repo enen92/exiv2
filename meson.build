@@ -115,7 +115,7 @@ cdata.set('EXV_HAVE_ICONV', iconv_dep.found())
 cdata.set('EXV_HAVE_LIBZ', zlib_dep.found())
 cdata.set('EXV_USE_CURL', curl_dep.found())
 cdata.set('EXV_ENABLE_NLS', intl_dep.found())
-cdata.set('EXV_ENABLE_WEBREADY', curl_dep.found())
+cdata.set('EXV_ENABLE_WEBREADY', get_option('webready'))
 
 cfile = configure_file(
   input: 'cmake/config.h.cmake',
