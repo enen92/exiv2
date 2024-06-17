@@ -70,7 +70,7 @@ jobs:
 
       - name: Build
         run: |
-          cmake --preset base_windows -S . -B build -DEXIV2_ENABLE_FILESYSTEM_ACCESS=OFF -DEXIV2_BUILD_SAMPLES=OFF -DEXIV2_BUILD_UNIT_TESTS=OFF -DEXIV2_BUILD_EXIV2_COMMAND=OFF -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DBUILD_SHARED_LIBS=${{matrix.shared_libraries}}
+          cmake --preset base_windows -S . -B build -DEXIV2_ENABLE_PNG=OFF -DEXIV2_ENABLE_FILESYSTEM_ACCESS=OFF -DEXIV2_BUILD_SAMPLES=OFF -DEXIV2_BUILD_UNIT_TESTS=OFF -DEXIV2_BUILD_EXIV2_COMMAND=OFF -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DBUILD_SHARED_LIBS=${{matrix.shared_libraries}}
           cmake --build build --parallel
 
       - name: Install
